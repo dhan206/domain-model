@@ -27,6 +27,7 @@ public struct Money {
     public var amount : Int
     public var currency : String
     
+    // Converts money to/from USB, GBP, EURO, and CAN
     public func convert(_ to: String) -> Money {
         let currentAmount = Double(self.amount)
         var amountConverted : Double
@@ -66,6 +67,7 @@ public struct Money {
         return Money(amount: Int(amountConverted), currency: to)
     }
     
+    // Adds money. Returns money in currency of passed money.
     public func add(_ to: Money) -> Money {
         var thisMoney = self
         if self.currency != to.currency { // Only convert if adding to different currency
@@ -74,6 +76,7 @@ public struct Money {
         return Money(amount: thisMoney.amount + to.amount, currency: to.currency)
     }
     
+    // Subtracts money. Returns money in currency of passed money.
     public func subtract(_ from: Money) -> Money {
         let thisMoney = self.convert(from.currency).amount
         return Money(amount: from.amount - thisMoney, currency: from.currency)
@@ -97,6 +100,7 @@ open class Job {
         self.type = type
     }
     
+    // Calculates income based on salary or hourly rate
     open func calculateIncome(_ hours: Int) -> Int {
         switch self.type {
         case .Hourly(let rate): return Int(rate * Double(hours))
@@ -104,6 +108,7 @@ open class Job {
         }
     }
     
+    // Raises the the salary or hourly rate with passed amount
     open func raise(_ amt : Double) {
         switch self.type {
         case .Salary(let income): self.type = .Salary(Int(Double(income) + amt))
@@ -120,6 +125,7 @@ open class Person {
     open var lastName : String = ""
     open var age : Int = 0
     
+    // Person's job
     fileprivate var _job : Job? = nil
     open var job : Job? {
         get { return self._job }
@@ -130,6 +136,7 @@ open class Person {
         }
     }
     
+    // Person's spouse
     fileprivate var _spouse : Person? = nil
     open var spouse : Person? {
         get { return self._spouse }
@@ -146,6 +153,7 @@ open class Person {
         self.age = age
     }
     
+    // String representation of person in the form: '[Person: firstName:Ted lastName:Neward age:45 job:nil spouse:nil]'
     open func toString() -> String {
         return "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(self.job?.title ?? "nil") spouse:\(self._spouse?.firstName ?? "nil")]"
     }
@@ -170,6 +178,7 @@ open class Family {
         }
     }
     
+    // Adds child to family and sets their age to 0
     open func haveChild(_ child: Person) -> Bool {
         let newChild = child
         newChild.age = 0
@@ -177,6 +186,7 @@ open class Family {
         return true
     }
     
+    // Returns the combined income of a household
     open func householdIncome() -> Int {
         var totalIncome = 0
         for member in members {
