@@ -197,8 +197,3 @@ open class Family {
         return totalIncome
     }
 }
-
-
-
-
-
